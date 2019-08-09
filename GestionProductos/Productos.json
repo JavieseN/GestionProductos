@@ -1,0 +1,12 @@
+[
+  {
+    "codigo": "0001",
+    "nombre": "Prueba",
+    "descripcion": "Descripción Producto",
+    "precio": 10,
+    "cantidadDisponible": 20,
+    "cantidadVendida": 1,
+    "IvaProducto": "GENERAL",
+    "categoriaProducto": "ALIMENTACION"
+  }
+]

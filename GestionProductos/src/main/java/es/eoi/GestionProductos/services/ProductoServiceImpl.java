@@ -20,9 +20,9 @@ public class ProductoServiceImpl implements ProductoService
 		return this.myDao.crear(nuevoProducto);
 	}
 
-	public boolean actualizar(Producto nuevoProducto)
+	public boolean actualizar(Integer codigo, Producto nuevoProducto)
 	{
-		return this.myDao.actualizar(nuevoProducto);
+		return this.myDao.actualizar(codigo,nuevoProducto);
 	}
 
 	public Producto buscar(Producto filtro)
@@ -30,14 +30,14 @@ public class ProductoServiceImpl implements ProductoService
 		return this.myDao.buscar(filtro);
 	}
 
-	public List<Producto> listarTodos(Producto filtro)
+	public List<Producto> listarTodos()
 	{
-		return this.myDao.listarTodos(filtro);
+		return this.myDao.listarTodos();
 	}
 
-	public boolean borrar(Producto nuevoProducto)
+	public boolean borrar(Integer codigo)
 	{
-		return this.myDao.borrar(nuevoProducto);
+		return this.myDao.borrar(codigo);
 	}
 
 	public void vender(Producto nuevoProducto)

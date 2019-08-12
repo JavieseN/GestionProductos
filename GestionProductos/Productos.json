@@ -1,6 +1,6 @@
 [
   {
-    "codigo": "0001",
+    "codigo": 1,
     "nombre": "Prueba",
     "descripcion": "Descripción Producto",
     "precio": 10,
@@ -10,13 +10,23 @@
     "categoriaProducto": "ALIMENTACION"
   },
   {
-    "codigo": "0002",
-    "nombre": "Prueba",
+    "codigo": 3,
+    "nombre": "Pruebo",
     "descripcion": "Descripción Producto",
     "precio": 10,
     "cantidadDisponible": 20,
     "cantidadVendida": 1,
     "IvaProducto": "GENERAL",
     "categoriaProducto": "ALIMENTACION"
+  },
+  {
+    "codigo": 2,
+    "nombre": "Lolo",
+    "descripcion": "asdsadcto",
+    "precio": 15,
+    "cantidadDisponible": 50,
+    "cantidadVendida": 5,
+    "IvaProducto": "GENERAL",
+    "categoriaProducto": "LUJO"
   }
 ]

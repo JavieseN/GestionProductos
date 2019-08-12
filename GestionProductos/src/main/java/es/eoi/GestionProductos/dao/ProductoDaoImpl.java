@@ -75,7 +75,7 @@ public class ProductoDaoImpl implements ProductoDao
 				boolean repetido = false;
 				for (int i = 0; i < listaProductos.size() && repetido == false; i++)
 				{
-					if(!listaProductos.get(i).getCodigo().equals(nuevoProducto.getCodigo()))
+					if(!listaProductos.get(i).getNombre().equals(nuevoProducto.getNombre()))
 					{
 						repetido = false;
 					}
@@ -86,6 +86,18 @@ public class ProductoDaoImpl implements ProductoDao
 				}
 				if(repetido == false)
 				{
+					Producto ultimoProducto = null;
+					Integer ultimoCodigo;
+					if(listaProductos.size() == 0)
+					{
+						ultimoCodigo = 1;
+					}
+					else
+					{
+						ultimoProducto = listaProductos.get(listaProductos.size()-1);
+						ultimoCodigo = ultimoProducto.getCodigo()+1;
+					}
+					nuevoProducto.setCodigo(ultimoCodigo);
 					listaProductos.add(nuevoProducto);
 					String jsonModificado = ListaToStringJSON(listaProductos);
 					FileWriter fw = new FileWriter("Productos.json", false);
@@ -106,31 +118,85 @@ public class ProductoDaoImpl implements ProductoDao
 		}
 		return false;
 	}
-
-	public boolean actualizar(Producto nuevoProducto)
+	
+	public boolean actualizar(Integer codigo ,Producto nuevoProducto)
 	{
-		if(nuevoProducto != null)
+		if(nuevoProducto != null || codigo != null)
 		{
 			String lista = volcarJSON();
 			List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+			Producto productoNoModificado = null;
 			boolean encontrado = false;
 			for (int i = 0; i < listaProductos.size() && encontrado == false; i++)
 			{
-				if(!listaProductos.get(i).getCodigo().equals(nuevoProducto.getCodigo()))
+				if(!listaProductos.get(i).getCodigo().equals(codigo))
 				{
 					encontrado = false;
 				}
 				else
 				{
+					productoNoModificado = listaProductos.get(i);
+					listaProductos.remove(productoNoModificado);
 					encontrado = true;
 				}
 			}
 			if(encontrado)
 			{
+				productoNoModificado.setCodigo(codigo);
+				if(nuevoProducto.getNombre() != null)
+				{
+					productoNoModificado.setNombre(nuevoProducto.getNombre());
+				}
+				if(nuevoProducto.getDescripcion() != null)
+				{
+					productoNoModificado.setDescripcion(nuevoProducto.getDescripcion());
+				}
+				if(!nuevoProducto.getPrecio().equals(null))
+				{
+					productoNoModificado.setPrecio(nuevoProducto.getPrecio());				
+				}
+				if(!nuevoProducto.getCantidadDisponible().equals(null))
+				{
+					productoNoModificado.setCantidadDisponible(nuevoProducto.getCantidadDisponible());					
+				}
+				if(!nuevoProducto.getCantidadVendida().equals(null))
+				{
+					productoNoModificado.setCantidadVendida(nuevoProducto.getCantidadVendida());
+				}
+				if(nuevoProducto.getIvaProducto() != null)
+				{
+					productoNoModificado.setIvaProducto(nuevoProducto.getIvaProducto());
+				}
+				if(nuevoProducto.getCategoriaProducto() != null)
+				{
+					productoNoModificado.setCategoriaProducto(nuevoProducto.getCategoriaProducto());
+				}
+				listaProductos.add(productoNoModificado);
 				
+				String jsonModificado = ListaToStringJSON(listaProductos);
+				FileWriter fw;
+				try
+				{
+					fw = new FileWriter("Productos.json", false);
+					fw.write(jsonModificado);
+					fw.close();
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
-		return false;
+		else
+		{
+			return false;
+		}
 	}
 
 	public Producto buscar(Producto filtro)
@@ -139,16 +205,24 @@ public class ProductoDaoImpl implements ProductoDao
 		return null;
 	}
 
-	public List<Producto> listarTodos(Producto filtro)
+	public List<Producto> listarTodos()
 	{
 		String lista = volcarJSON();
 		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
 		return listaProductos;
 	}
 
-	public boolean borrar(Producto nuevoProducto)
+	public boolean borrar(Integer codigo)
 	{
-		// TODO Auto-generated method stub
+		String lista = volcarJSON();
+		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+		for (Producto producto : listaProductos)
+		{
+			if(producto.getCodigo().equals(codigo))
+			{
+				listaProductos.remove(producto);
+			}
+		}
 		return false;
 	}
 
@@ -157,5 +231,4 @@ public class ProductoDaoImpl implements ProductoDao
 		// TODO Auto-generated method stub
 		
 	}
-
 }

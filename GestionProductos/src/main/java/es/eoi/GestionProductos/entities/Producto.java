@@ -5,20 +5,19 @@ import es.eoi.GestionProductos.enums.IVA;
 
 public class Producto
 {
-	private String codigo;
+	private Integer codigo;
 	private String nombre;
 	private String descripcion;
-	private int precio;
-	private int cantidadDisponible;
-	private int cantidadVendida;
+	private Integer precio;
+	private Integer cantidadDisponible;
+	private Integer cantidadVendida;
 	private IVA IvaProducto;
 	private Categorias categoriaProducto;
 	
-	public Producto(String codigo, String nombre, String descripcion, int precio, int cantidadDisponible,
+	public Producto(String nombre, String descripcion, int precio, int cantidadDisponible,
 			int cantidadVendida, IVA ivaProducto, Categorias categoriaProducto)
 	{
 		super();
-		this.codigo = codigo;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precio = precio;
@@ -28,12 +27,12 @@ public class Producto
 		this.categoriaProducto = categoriaProducto;
 	}
 
-	public String getCodigo()
+	public Integer getCodigo()
 	{
 		return codigo;
 	}
 
-	public void setCodigo(String codigo)
+	public void setCodigo(Integer codigo)
 	{
 		this.codigo = codigo;
 	}
@@ -58,7 +57,7 @@ public class Producto
 		this.descripcion = descripcion;
 	}
 
-	public int getPrecio()
+	public Integer getPrecio()
 	{
 		return precio;
 	}
@@ -68,7 +67,7 @@ public class Producto
 		this.precio = precio;
 	}
 
-	public int getCantidadDisponible()
+	public Integer getCantidadDisponible()
 	{
 		return cantidadDisponible;
 	}
@@ -78,7 +77,7 @@ public class Producto
 		this.cantidadDisponible = cantidadDisponible;
 	}
 
-	public int getCantidadVendida()
+	public Integer getCantidadVendida()
 	{
 		return cantidadVendida;
 	}

@@ -13,8 +13,9 @@ public class Main
 	public static void main(String[] args)
 	{
 		ProductoService servicio = new ProductoServiceImpl();
+		List<Producto> listaProductos;
 		
-		if(servicio.crear(new Producto("0001", "Prueba", "Descripción Producto", 10, 20, 1, IVA.GENERAL, Categorias.ALIMENTACION)))
+		if(servicio.crear(new Producto("Pruebo", "Descripción Producto", 10, 20, 1, IVA.GENERAL, Categorias.ALIMENTACION)))
 		{
 			System.out.println("Nice");
 		}
@@ -22,7 +23,17 @@ public class Main
 		{
 			System.err.println("F");
 		}
-		List<Producto> listaProductos = servicio.listarTodos(new Producto("0001", "Prueba", "Descripción Producto", 10, 20, 1, IVA.GENERAL, Categorias.ALIMENTACION));
+		listaProductos = servicio.listarTodos();
+		
+		if(servicio.actualizar(2,new Producto("Lolo", "asdsadcto", 15, 50, 5, IVA.GENERAL, Categorias.LUJO)))
+		{
+			System.out.println("Nice");
+		}
+		else
+		{
+			System.err.println("F");
+		}
+		listaProductos = servicio.listarTodos();
 		for (Producto producto : listaProductos) 
 		{
 			System.out.println(producto);

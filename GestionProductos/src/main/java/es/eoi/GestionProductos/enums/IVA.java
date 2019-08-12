@@ -15,9 +15,4 @@ public enum IVA
 	{
 		return cantidad;
 	}
-
-	public void setCantidad(int cantidad)
-	{
-		this.cantidad = cantidad;
-	}
 }

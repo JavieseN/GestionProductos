@@ -37,8 +37,7 @@ public class ProductoDaoImpl implements ProductoDao
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("No se ha podido encontrar el fichero");
 		}
 		catch (IOException e)
 		{
@@ -72,11 +71,11 @@ public class ProductoDaoImpl implements ProductoDao
 			try
 			{
 				String json = volcarJSON();
-				List<Producto> listaProductos = stringJSONtoLista(json);
+				List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(json));
 				boolean repetido = false;
 				for (int i = 0; i < listaProductos.size() && repetido == false; i++)
 				{
-					if(listaProductos.get(i).getCodigo() != nuevoProducto.getCodigo())
+					if(!listaProductos.get(i).getCodigo().equals(nuevoProducto.getCodigo()))
 					{
 						repetido = false;
 					}
@@ -94,7 +93,7 @@ public class ProductoDaoImpl implements ProductoDao
 					fw.close();
 					return true;
 				}
-				else
+				else if(repetido)
 				{
 					return false;
 				}
@@ -110,7 +109,27 @@ public class ProductoDaoImpl implements ProductoDao
 
 	public boolean actualizar(Producto nuevoProducto)
 	{
-		// TODO Auto-generated method stub
+		if(nuevoProducto != null)
+		{
+			String lista = volcarJSON();
+			List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+			boolean encontrado = false;
+			for (int i = 0; i < listaProductos.size() && encontrado == false; i++)
+			{
+				if(!listaProductos.get(i).getCodigo().equals(nuevoProducto.getCodigo()))
+				{
+					encontrado = false;
+				}
+				else
+				{
+					encontrado = true;
+				}
+			}
+			if(encontrado)
+			{
+				
+			}
+		}
 		return false;
 	}
 
@@ -122,8 +141,9 @@ public class ProductoDaoImpl implements ProductoDao
 
 	public List<Producto> listarTodos(Producto filtro)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		String lista = volcarJSON();
+		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+		return listaProductos;
 	}
 
 	public boolean borrar(Producto nuevoProducto)

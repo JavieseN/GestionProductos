@@ -1,5 +1,7 @@
 package es.eoi.GestionProductos.app;
 
+import java.util.List;
+
 import es.eoi.GestionProductos.entities.Producto;
 import es.eoi.GestionProductos.enums.Categorias;
 import es.eoi.GestionProductos.enums.IVA;
@@ -19,6 +21,11 @@ public class Main
 		else
 		{
 			System.err.println("F");
+		}
+		List<Producto> listaProductos = servicio.listarTodos(new Producto("0001", "Prueba", "Descripción Producto", 10, 20, 1, IVA.GENERAL, Categorias.ALIMENTACION));
+		for (Producto producto : listaProductos) 
+		{
+			System.out.println(producto);
 		}
 	}
 }

@@ -8,5 +8,15 @@
     "cantidadVendida": 1,
     "IvaProducto": "GENERAL",
     "categoriaProducto": "ALIMENTACION"
+  },
+  {
+    "codigo": "0002",
+    "nombre": "Prueba",
+    "descripcion": "Descripción Producto",
+    "precio": 10,
+    "cantidadDisponible": 20,
+    "cantidadVendida": 1,
+    "IvaProducto": "GENERAL",
+    "categoriaProducto": "ALIMENTACION"
   }
 ]

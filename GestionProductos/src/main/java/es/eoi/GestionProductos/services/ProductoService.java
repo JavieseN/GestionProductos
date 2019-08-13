@@ -11,5 +11,5 @@ public interface ProductoService
 	public Producto buscar(Producto filtro);
 	public List<Producto> listarTodos();
 	public boolean borrar(Integer codigo);
-	public void vender(Producto nuevoProducto);
+	public boolean vender(Integer codigo);
 }

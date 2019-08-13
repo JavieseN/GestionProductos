@@ -1,17 +1,7 @@
 [
   {
     "codigo": 1,
-    "nombre": "Prueba",
-    "descripcion": "Descripción Producto",
-    "precio": 10,
-    "cantidadDisponible": 20,
-    "cantidadVendida": 1,
-    "IvaProducto": "GENERAL",
-    "categoriaProducto": "ALIMENTACION"
-  },
-  {
-    "codigo": 3,
-    "nombre": "Pruebo",
+    "nombre": "Pruebe",
     "descripcion": "Descripción Producto",
     "precio": 10,
     "cantidadDisponible": 20,

@@ -64,56 +64,63 @@ public class ProductoDaoImpl implements ProductoDao
 		return json;
 	}
 	
+	public boolean escribirJSON(String json)
+	{
+		FileWriter fw;
+		try {
+			fw = new FileWriter("Productos.json", false);
+			fw.write(json);
+			fw.close();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public boolean crear(Producto nuevoProducto)
 	{
 		if(nuevoProducto != null)
 		{
-			try
+			String json = volcarJSON();
+			List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(json));
+			boolean repetido = false;
+			for (int i = 0; i < listaProductos.size() && repetido == false; i++)
 			{
-				String json = volcarJSON();
-				List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(json));
-				boolean repetido = false;
-				for (int i = 0; i < listaProductos.size() && repetido == false; i++)
+				if(!listaProductos.get(i).getNombre().equals(nuevoProducto.getNombre()))
 				{
-					if(!listaProductos.get(i).getNombre().equals(nuevoProducto.getNombre()))
-					{
-						repetido = false;
-					}
-					else
-					{
-						repetido = true;
-					}
+					repetido = false;
 				}
-				if(repetido == false)
+				else
 				{
-					Producto ultimoProducto = null;
-					Integer ultimoCodigo;
-					if(listaProductos.size() == 0)
-					{
-						ultimoCodigo = 1;
-					}
-					else
-					{
-						ultimoProducto = listaProductos.get(listaProductos.size()-1);
-						ultimoCodigo = ultimoProducto.getCodigo()+1;
-					}
-					nuevoProducto.setCodigo(ultimoCodigo);
-					listaProductos.add(nuevoProducto);
-					String jsonModificado = ListaToStringJSON(listaProductos);
-					FileWriter fw = new FileWriter("Productos.json", false);
-					fw.write(jsonModificado);
-					fw.close();
+					repetido = true;
+				}
+			}
+			if(repetido == false)
+			{
+				Producto ultimoProducto = null;
+				Integer ultimoCodigo;
+				if(listaProductos.size() == 0)
+				{
+					ultimoCodigo = 1;
+				}
+				else
+				{
+					ultimoProducto = listaProductos.get(listaProductos.size()-1);
+					ultimoCodigo = ultimoProducto.getCodigo()+1;
+				}
+				nuevoProducto.setCodigo(ultimoCodigo);
+				listaProductos.add(nuevoProducto);
+				String jsonModificado = ListaToStringJSON(listaProductos);
+				if(escribirJSON(jsonModificado))
+				{
 					return true;
 				}
-				else if(repetido)
-				{
-					return false;
-				}
-				
 			}
-			catch(IOException e)
+			else if(repetido)
 			{
-				System.err.println("No se ha podido escribir en el fichero");
+				return false;
 			}
 		}
 		return false;
@@ -174,29 +181,19 @@ public class ProductoDaoImpl implements ProductoDao
 				listaProductos.add(productoNoModificado);
 				
 				String jsonModificado = ListaToStringJSON(listaProductos);
-				FileWriter fw;
-				try
-				{
-					fw = new FileWriter("Productos.json", false);
-					fw.write(jsonModificado);
-					fw.close();
-				} catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				
-				return true;
+				if(escribirJSON(jsonModificado))
+				{
+					return true;
+				}
 			}
 			else
 			{
 				return false;
 			}
 		}
-		else
-		{
-			return false;
-		}
+		return false;
+		
 	}
 
 	public Producto buscar(Producto filtro)
@@ -220,15 +217,40 @@ public class ProductoDaoImpl implements ProductoDao
 		{
 			if(producto.getCodigo().equals(codigo))
 			{
-				listaProductos.remove(producto);
+				if(listaProductos.remove(producto))
+				{
+					String jsonModificado = ListaToStringJSON(listaProductos);
+					if(escribirJSON(jsonModificado))
+					{
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 		return false;
 	}
 
-	public void vender(Producto nuevoProducto)
+	public boolean vender(Integer codigo)
 	{
-		// TODO Auto-generated method stub
-		
+		String lista = volcarJSON();
+		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+		for (Producto producto : listaProductos)
+		{
+			if(producto.getCodigo().equals(codigo) && producto.getCantidadDisponible() > 0)
+			{
+				producto.setCantidadVendida(producto.getCantidadVendida()+1);
+				producto.setCantidadDisponible(producto.getCantidadDisponible()-1);
+				String jsonModificado = ListaToStringJSON(listaProductos);
+				if(escribirJSON(jsonModificado))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

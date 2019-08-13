@@ -40,9 +40,8 @@ public class ProductoServiceImpl implements ProductoService
 		return this.myDao.borrar(codigo);
 	}
 
-	public void vender(Producto nuevoProducto)
+	public boolean vender(Integer codigo)
 	{
-		// TODO Auto-generated method stub
-		
+		return this.myDao.vender(codigo);		
 	}
 }

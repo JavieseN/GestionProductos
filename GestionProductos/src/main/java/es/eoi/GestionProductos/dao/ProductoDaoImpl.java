@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import es.eoi.GestionProductos.entities.Producto;
+import es.eoi.GestionProductos.enums.Categorias;
 
 public class ProductoDaoImpl implements ProductoDao
 {
@@ -196,10 +197,52 @@ public class ProductoDaoImpl implements ProductoDao
 		
 	}
 
-	public Producto buscar(Producto filtro)
+	public List<Producto> buscar(Producto filtro)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		/*Integer codidoProducto;
+		String nombreProducto;
+		Categorias categoriaProducto;*/
+		List<Producto> productosFiltrados = new ArrayList<Producto>();
+		
+		String lista = volcarJSON();
+		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+		
+		for (Producto producto : listaProductos) 
+		{
+			if(producto.getCodigo().equals(filtro.getCodigo()) || producto.getNombre().equals(filtro.getNombre()) || producto.getCategoriaProducto().equals(filtro.getCategoriaProducto()))
+			{
+				productosFiltrados.add(producto);
+			}
+			/*if(producto.getCodigo().equals(filtro.getCodigo()) && producto.getNombre().equals(filtro.getNombre()) && producto.getCategoriaProducto().equals(filtro.getCategoriaProducto()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getCodigo().equals(filtro.getCodigo()) && producto.getNombre().equals(filtro.getNombre()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getCodigo().equals(filtro.getCodigo()) && producto.getCategoriaProducto().equals(filtro.getCategoriaProducto()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getNombre().equals(filtro.getNombre()) && producto.getCategoriaProducto().equals(filtro.getCategoriaProducto()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getCodigo().equals(filtro.getCodigo()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getNombre().equals(filtro.getNombre()))
+			{
+				productosFiltrados.add(producto);
+			}
+			else if(producto.getCategoriaProducto().equals(filtro.getCategoriaProducto()))
+			{
+				productosFiltrados.add(producto);
+			}*/
+		}
+		return productosFiltrados;
 	}
 
 	public List<Producto> listarTodos()
@@ -234,7 +277,7 @@ public class ProductoDaoImpl implements ProductoDao
 		return false;
 	}
 
-	public boolean vender(Integer codigo)
+	public boolean vender(Integer codigo, int cantidad)
 	{
 		String lista = volcarJSON();
 		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
@@ -242,8 +285,8 @@ public class ProductoDaoImpl implements ProductoDao
 		{
 			if(producto.getCodigo().equals(codigo) && producto.getCantidadDisponible() > 0)
 			{
-				producto.setCantidadVendida(producto.getCantidadVendida()+1);
-				producto.setCantidadDisponible(producto.getCantidadDisponible()-1);
+				producto.setCantidadVendida(producto.getCantidadVendida()+cantidad);
+				producto.setCantidadDisponible(producto.getCantidadDisponible()-cantidad);
 				String jsonModificado = ListaToStringJSON(listaProductos);
 				if(escribirJSON(jsonModificado))
 				{
@@ -252,5 +295,105 @@ public class ProductoDaoImpl implements ProductoDao
 			}
 		}
 		return false;
+	}
+
+	public String informe() 
+	{
+		String lista = volcarJSON();
+		List<Producto> listaProductos = new ArrayList<Producto>(stringJSONtoLista(lista));
+		String informeAlimentacion = "ALIMENTACION\n";
+		String informeLujo = "LUJO\n";
+		String informeMaterial = "MATERIAL\n";
+		String informeMecanico = "MECANICO\n";
+		Double sumaSinIVA = 0.0;
+		Double sumaConIVA = 0.0;
+		
+		List<Producto> listaProductosAlimentacion = new ArrayList<Producto>();
+		List<Producto> listaProductosLujo = new ArrayList<Producto>();
+		List<Producto> listaProductosMaterial = new ArrayList<Producto>();
+		List<Producto> listaProductosMecanico = new ArrayList<Producto>();
+		for (Producto producto : listaProductos) 
+		{
+			if(producto.getCategoriaProducto().equals(Categorias.ALIMENTACION) && producto.getCantidadVendida() > 0) 
+			{
+				listaProductosAlimentacion.add(producto);
+			}
+			else if(producto.getCategoriaProducto().equals(Categorias.LUJO) && producto.getCantidadVendida() > 0) 
+			{
+				listaProductosLujo.add(producto);
+			}
+			else if(producto.getCategoriaProducto().equals(Categorias.MATERIAL) && producto.getCantidadVendida() > 0) 
+			{
+				listaProductosMaterial.add(producto);
+			}
+			else if(producto.getCategoriaProducto().equals(Categorias.MECANICO) && producto.getCantidadVendida() > 0) 
+			{
+				listaProductosMecanico.add(producto);
+			}
+		}
+		if(listaProductosAlimentacion.size() > 0)
+		{
+			for (Producto producto : listaProductosAlimentacion) 
+			{
+				informeAlimentacion = informeAlimentacion.concat(String.format("%04d", producto.getCodigo()) + " - " + producto.getNombre() + "(x"+ producto.getCantidadVendida() + ")............. Total sin IVA: " + (producto.getCantidadVendida() * producto.getPrecio()) + "€ / Total con IVA: " + (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad()))) + "\n");
+				sumaSinIVA += (producto.getCantidadVendida() * producto.getPrecio());
+				sumaConIVA += (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad())));
+			}
+			informeAlimentacion = informeAlimentacion.concat("TOTAL ............. Total sin IVA: " + sumaSinIVA + "€ / Total con IVA: " + sumaConIVA + "€\n");
+			
+		}
+		else
+		{
+			informeAlimentacion = "";
+		}
+		sumaSinIVA = 0.0;
+		sumaConIVA = 0.0;
+		if(listaProductosLujo.size() > 0)
+		{
+			for (Producto producto : listaProductosLujo) 
+			{
+				informeLujo = informeLujo.concat(String.format("%04d", producto.getCodigo()) + " - " + producto.getNombre() + "(x"+ producto.getCantidadVendida() + ")............. Total sin IVA: " + (producto.getCantidadVendida() * producto.getPrecio()) + "€ / Total con IVA: " + (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad()))) + "\n");
+				sumaSinIVA += (producto.getCantidadVendida() * producto.getPrecio());
+				sumaConIVA += (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad())));
+			}
+			informeLujo = informeLujo.concat("TOTAL ............. Total sin IVA: " + sumaSinIVA + "€ / Total con IVA: " + sumaConIVA + "€\n");
+		}
+		else
+		{
+			informeLujo = "";
+		}
+		sumaSinIVA = 0.0;
+		sumaConIVA = 0.0;
+		if(listaProductosMaterial.size() > 0)
+		{
+			for (Producto producto : listaProductosMaterial) 
+			{
+				informeMaterial = informeMaterial.concat(String.format("%04d", producto.getCodigo()) + " - " + producto.getNombre() + "(x"+ producto.getCantidadVendida() + ")............. Total sin IVA: " + (producto.getCantidadVendida() * producto.getPrecio()) + "€ / Total con IVA: " + (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad()))) + "\n");
+				sumaSinIVA += (producto.getCantidadVendida() * producto.getPrecio());
+				sumaConIVA += (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad())));
+			}
+			informeMaterial = informeMaterial.concat("TOTAL ............. Total sin IVA: " + sumaSinIVA + "€ / Total con IVA: " + sumaConIVA + "€\n");
+		}
+		else
+		{
+			informeMaterial = "";
+		}
+		sumaSinIVA = 0.0;
+		sumaConIVA = 0.0;
+		if(listaProductosMecanico.size() > 0)
+		{
+			for (Producto producto : listaProductosMecanico) 
+			{
+				informeMecanico = informeMecanico.concat(String.format("%04d", producto.getCodigo()) + " - " + producto.getNombre() + "(x"+ producto.getCantidadVendida() + ")............. Total sin IVA: " + (producto.getCantidadVendida() * producto.getPrecio()) + "€ / Total con IVA: " + (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad()))) + "\n");
+				sumaSinIVA += (producto.getCantidadVendida() * producto.getPrecio());
+				sumaConIVA += (producto.getCantidadVendida() *(producto.getPrecio() + (producto.getPrecio() * producto.getIvaProducto().getCantidad())));
+			}
+			informeMecanico = informeMecanico.concat("TOTAL ............. Total sin IVA: " + sumaSinIVA + "€ / Total con IVA: " + sumaConIVA + "€\n");
+		}
+		else
+		{
+			informeMecanico = "";
+		}
+		return informeAlimentacion.concat(informeLujo).concat(informeMaterial).concat(informeMecanico);
 	}
 }

@@ -1,22 +1,42 @@
 [
   {
     "codigo": 1,
-    "nombre": "Pruebe",
-    "descripcion": "Descripción Producto",
-    "precio": 10,
-    "cantidadDisponible": 20,
+    "nombre": "Prueba",
+    "descripcion": "asdasd",
+    "precio": 14.0,
+    "cantidadDisponible": 5,
     "cantidadVendida": 1,
-    "IvaProducto": "GENERAL",
+    "IvaProducto": "REDUCIDO",
     "categoriaProducto": "ALIMENTACION"
   },
   {
     "codigo": 2,
-    "nombre": "Lolo",
-    "descripcion": "asdsadcto",
-    "precio": 15,
-    "cantidadDisponible": 50,
-    "cantidadVendida": 5,
+    "nombre": "poi",
+    "descripcion": "gfd",
+    "precio": 20.0,
+    "cantidadDisponible": 3,
+    "cantidadVendida": 2,
     "IvaProducto": "GENERAL",
     "categoriaProducto": "LUJO"
+  },
+  {
+    "codigo": 3,
+    "nombre": "rty",
+    "descripcion": "ytr",
+    "precio": 2.5,
+    "cantidadDisponible": 5,
+    "cantidadVendida": 3,
+    "IvaProducto": "REDUCIDO",
+    "categoriaProducto": "MATERIAL"
+  },
+  {
+    "codigo": 4,
+    "nombre": "po",
+    "descripcion": "oo",
+    "precio": 5.6,
+    "cantidadDisponible": 0,
+    "cantidadVendida": 4,
+    "IvaProducto": "SUPERREDUCIDO",
+    "categoriaProducto": "MECANICO"
   }
 ]

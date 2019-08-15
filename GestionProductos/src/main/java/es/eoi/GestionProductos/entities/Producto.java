@@ -8,14 +8,14 @@ public class Producto
 	private Integer codigo;
 	private String nombre;
 	private String descripcion;
-	private Integer precio;
+	private Double precio;
 	private Integer cantidadDisponible;
 	private Integer cantidadVendida;
 	private IVA IvaProducto;
 	private Categorias categoriaProducto;
 	
-	public Producto(String nombre, String descripcion, int precio, int cantidadDisponible,
-			int cantidadVendida, IVA ivaProducto, Categorias categoriaProducto)
+	public Producto(String nombre, String descripcion, Double precio, Integer cantidadDisponible,
+			Integer cantidadVendida, IVA ivaProducto, Categorias categoriaProducto)
 	{
 		super();
 		this.nombre = nombre;
@@ -57,12 +57,12 @@ public class Producto
 		this.descripcion = descripcion;
 	}
 
-	public Integer getPrecio()
+	public Double getPrecio()
 	{
 		return precio;
 	}
 
-	public void setPrecio(int precio)
+	public void setPrecio(Double precio)
 	{
 		this.precio = precio;
 	}
@@ -72,7 +72,7 @@ public class Producto
 		return cantidadDisponible;
 	}
 
-	public void setCantidadDisponible(int cantidadDisponible)
+	public void setCantidadDisponible(Integer cantidadDisponible)
 	{
 		this.cantidadDisponible = cantidadDisponible;
 	}
@@ -82,7 +82,7 @@ public class Producto
 		return cantidadVendida;
 	}
 
-	public void setCantidadVendida(int cantidadVendida)
+	public void setCantidadVendida(Integer cantidadVendida)
 	{
 		this.cantidadVendida = cantidadVendida;
 	}

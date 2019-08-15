@@ -2,16 +2,16 @@ package es.eoi.GestionProductos.enums;
 
 public enum IVA
 {
-	GENERAL(21),REDUCIDO(10),SUPERREDUCIDO(4);
+	GENERAL(0.21),REDUCIDO(0.10),SUPERREDUCIDO(0.4);
 	
-	private int cantidad;
+	private Double cantidad;
 	
-	private IVA(int cantidad)
+	private IVA(Double cantidad)
 	{
 		this.cantidad = cantidad;
 	}
 
-	public int getCantidad()
+	public Double getCantidad()
 	{
 		return cantidad;
 	}
